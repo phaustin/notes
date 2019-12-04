@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="generator" content="pandoc">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+                                <title>stats_note</title>
+        
+        <!-- Yahoo! CDN combo URL for selected Pure.css modules -->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css">
+
+        <!-- Extra styles -->
+        <link rel="stylesheet" href="css/extra.css?__inline=true">
+
+                                            </head>
+    <body>
+        <section id="page-content">
+            <div class="pure-g">
+                <div class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-1 pure-u-xl-1">
+
+                    <!-- page content begins here -->
+
+                                                                                                                                                                <!-- #raw -->
+
+<!-- #endraw -->
+<section id="reviewer-comment-for-reference" class="level2">
+<h2>reviewer comment for reference</h2>
+<pre><code>The statistical evaluation of the fitted model describes a situation to avoid,
+as I have repeatedly stressed in my graduate level statistics classes. 
+I find that the R2 statistics is overly simplified and overly emphasized. 
+When using the R2 value, students will naturally equate a model with a higher 
+value as a better model, a simplistic, and often misleading, view. 
+Once this idea is introduced, we cannot easily correct the misconception. 
+So, please do not plant the misconception in the first place. The R2 value 
+is a measure of linear association. For a simple linear regression model (with one predictor),
+the R2 value is the square of the correlation coefficient between x and y when the 
+relationship between x and y is actually linear.</code></pre>
+</section>
+<section id="walk-through-the-regression-portion-my-potalk" class="level2">
+<h2>Walk through the regression portion <a href="https://phaustin.github.io/talks/potalk/potalk_rise.slides.html#/11">my potalk</a></h2>
+<section id="what-is-our-model" class="level3">
+<h3>What is our model?</h3>
+<p>For linear regression, the model is:</p>
+<p></p>
+<p>Where the slope <span class="math inline"><em>θ</em><sub>1</sub></span> and the intercept <span class="math inline"><em>θ</em><sub>0</sub></span> are (in the frequentist interpretation) numbers we have estimated somehow, and <span class="math inline"><em>ϵ</em></span> is a random variable that represents variablity that isn’t captured by the linear relationship. Note that this means that y is also a random variable, and we strictly need to write (<span class="math inline">∼</span>: “has the probability distribution of”) rather than (=: “is equal to”). This nuance makes a big difference in everything that follows.</p>
+</section>
+</section>
+<section id="modeling-epsilon" class="level2">
+<h2>Modeling <span class="math inline"><em>ϵ</em></span></h2>
+<p>For standard ordinary least squares regression, there are some strong constraints on <span class="math inline"><em>ϵ</em></span>. It is assumed to be normally distributed with mean 0 and constant variance <span class="math inline"><em>σ</em><sup>2</sup></span>. That is," it takes the form:</p>
+<p></p>
+<p>and this means that the full model also has a probability distribution that is given by:</p>
+<p></p>
+<p>How do we use the model to make a prediction? If the underlying process is accuartely captured by () then if you give me <span class="math inline">(<em>x</em>, <em>θ</em><sub>0</sub>, <em>θ</em><sub>1</sub>, <em>σ</em>)</span> I can say that, if we sampled the process repeatedly, 95% of the time we would get a measurement of y that lay in the range <span class="math inline"><em>θ</em><sub>0</sub> + <em>θ</em><sub>1</sub><em>x</em> ± 2<em>σ</em></span> (See <a href="https://phaustin.github.io/talks/potalk/potalk_rise.slides.html#/8">slide 8</a> )</p>
+<section id="but-i-want-a-number-not-a-confidence-interval" class="level3">
+<h3>But I want a number not a confidence interval!</h3>
+<p>Because we have <span class="math inline"><em>p</em>(<em>y</em>)</span>, we can find <span class="math inline">$\overline{y}$</span>, the mean value, or first moment, of y:</p>
+<p> This follows since the only thing that is a function of <span class="math inline"><em>y</em></span> is <span class="math inline"><em>ϵ</em></span>, and <span class="math inline">$\overline{\epsilon} = 0$</span>.</p>
+<p>Note that we can also find the probability, for example, that if <span class="math inline"><em>x</em> = 5</span>, <span class="math inline"><em>y</em> &gt; 10</span> by doing this integral:</p>
+<p></p>
+</section>
+<section id="estimating-theta_0-and-theta_1" class="level3">
+<h3>Estimating <span class="math inline"><em>θ</em><sub>0</sub></span> and <span class="math inline"><em>θ</em><sub>1</sub></span></h3>
+<p>How does a frequentist find estimates of the slope and the intercept? They start with this model, and make another assumption: that we have <a href="https://www.jstor.org/stable/10.2979/tra.2010.46.3.423?seq=1">universes as plenty as blackberries</a></p>
+<p>If we can assume that, then we can imagine independently drawing a large number of measurements of y from the different universes. Since we have the probability distribution of our model, we can calculate the probability than any particular sample <span class="math inline">(<em>x</em><sub><em>i</em></sub>, <em>y</em><sub><em>i</em></sub>)</span> will be observed:</p>
+<p></p>
+<p>Since we are making independent draws, the probability that will see a paricular set of <span class="math inline"><em>X</em> ∈ (<em>x</em><sub><em>i</em></sub>, <em>y</em><sub><em>i</em></sub>)</span> pairs is just the product of each of their individual probabilities:</p>
+<p></p>
+<p>This is called the “likelihood”.</p>
+</section>
+<section id="maximum-likelihood" class="level3">
+<h3>Maximum likelihood</h3>
+<p>Solve this for the set of parameters that give the <strong>maximum likelihood</strong> by taking the <span class="math inline">log </span> and finding the maximum by setting the derivative = 0 and solving for <span class="math inline">(<em>θ</em><sub>0</sub>, <em>θ</em><sub>1</sub>)</span>. This gives you the usual relationship for the slope and intercept in terms of the data statistics (<span class="math inline">$\overline{x}$</span>,<span class="math inline">$\overline{y}$</span>). Note that we don’t need to know <span class="math inline"><em>σ</em></span>, because we’re assuming it’s constant.</p>
+<p><br /><span class="math display">$$
+l_{X}\left(\theta_{0}, \theta_{1}, \sigma^{2}\right)=\log \left[\frac{1}{\sqrt{2 \pi \sigma^{2}}} \prod_{(x, y) \in X} e^{\frac{-\left(y-\left(\theta_{1} x+\theta_{0}\right)\right)^{2}}{2 \sigma^{2}}}\right]
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+=-\log (\sqrt{2 \pi \sigma^{2}})-\frac{1}{2 \sigma^{2}} \sum_{(x, y) \in X}\left[y-\left(\theta_{1} x+\theta_{0}\right)\right]^{2}
+$$</span><br /></p>
+<section id="which-yields" class="level4">
+<h4>Which yields</h4>
+<p></p>
+<p><strong>To repeat,we don’t need to know <span class="math inline"><em>σ</em></span>, because we’re assuming it’s constant, so it doesn’t change the location of the maximum, but it is still part of the model</strong></p>
+</section>
+</section>
+<section id="link-to-ordinary-least-squares" class="level3">
+<h3>Link to ordinary least squares</h3>
+<p>Miraculously, in the specific case of this model, maximising the likelihood is the same as minimizing <span class="math inline"><em>χ</em><sup>2</sup></span> so we can just turn that crank, but hopefully not forget all of the above.</p>
+</section>
+<section id="uncertainty-in-theta_0-and-theta_1" class="level3">
+<h3>Uncertainty in <span class="math inline"><em>θ</em><sub>0</sub></span> and <span class="math inline"><em>θ</em><sub>1</sub></span></h3>
+<p>We’ve found a single estimate of (<span class="math inline"><em>θ</em><sub>0</sub>, <em>θ</em><sub>1</sub></span>) for a single sample. What if we had drawn the sample from a different universe? Then you get something like <a href="https://phaustin.github.io/talks/potalk/potalk_rise.slides.html#/18/1">slide 18</a> and <a href="https://phaustin.github.io/talks/potalk/potalk_rise.slides.html#/19/1">slide 19</a></p>
+</section>
+</section>
+<section id="estimating-sigma2" class="level2">
+<h2>Estimating <span class="math inline"><em>σ</em><sup>2</sup></span></h2>
+<p>How do we estimate the variance? In my talk, I show how a Bayesian would do this – see <a href="https://phaustin.github.io/talks/potalk/potalk_rise.slides.html#/25">slide 25</a></p>
+</section>
+<section id="summary" class="level2">
+<h2>Summary</h2>
+<p>In ligth of the above, a sentence like:</p>
+<p>“The linear regression model can still only weakly predict the October CO2 values based on time.” isn’t quite right, because it’s ignoring the <span class="math inline"><em>ϵ</em></span> specification that is part of the model. A good model that properly captures an intrinsically large <span class="math inline"><em>σ</em><sup>2</sup></span> is going to have low covariance, but that’s the right answer, not a failure of the model.</p>
+</section>
+                    
+                    <!-- page content ends here -->
+
+                </div>     <!-- pure-u-1... -->
+            </div>     <!-- pure-g -->
+        </section> <!-- page-content -->
+        <div class="pure-g">
+            <footer><p> </p> </footer>
+        </div>
+        <script src="js/mindoc.js?__inline=true"></script>
+
+        <!-- For debugging local scripts -->
+        <!-- <script src="js/mindoc.js"></script> -->
+</body>
+</html>
